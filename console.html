@@ -1,0 +1,18 @@
+<script src="wind-all-0.7.3.js"></script>
+<script src="github.js"></script>
+
+<script>
+eval(Wind.compile("async", function () {
+    github.access_token = "93eb1d0fcc823d3ede0cf00f448f4c28c8a23fdc";
+
+    //var me = $await(github.getUser("JeffreyZhao"));
+    var me = $await(github.getAuthenticatedUser());
+    
+    var me = $await(github.createIssue("wintercn","es5.zh-cn",{title:"api test",body:"api test"}));
+    console.log(me);
+
+        
+    
+}))().start();
+
+</script>
