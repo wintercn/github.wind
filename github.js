@@ -44,10 +44,10 @@ void function() {
     github.getUser = function(user){
         return GithubAPI("GET","/users/"+user,null);
     }
-    github.getAuthenticatedUser = function(){
+    github.getMyUserInfo = function(){
         return GithubAPI("GET","/user",null);
     }    
-    github.updateAuthenticatedUser = function(params){
+    github.updateMyUserInfo = function(params){
         return GithubAPI("PATCH","/user",params);
     }
     github.listIssues = function(params){        
@@ -60,6 +60,36 @@ void function() {
         return GithubAPI("POST","/repos/"+user+"/"+repo+"/issues",params);
     }
     github.getIssue = function(user,repo,id,params){        
-        return GithubAPI("POST","/repos/"+user+"/"+repo+"/issues/"+id);
+        return GithubAPI("GET","/repos/"+user+"/"+repo+"/issues/"+id);
+    }
+    github.listMyGists = function() {
+        return GithubAPI("GET","/gists");        
+    }
+    github.listMyStaredGists = function() {
+        return GithubAPI("GET","/gists/starred");        
+    }
+    github.listPublicGists = function() {
+        return GithubAPI("GET","/gists/public");        
+    }
+    github.listGists = function(user){        
+        return GithubAPI("GET","/users/"+user+"/gists");
+    }
+    github.getGist= function(id) {
+        return GithubAPI("GET","/gists/"+id);        
+    }
+    github.createGist= function(params) {
+        return GithubAPI("POST","/gists",params);        
+    }
+    github.updateGist= function(id,params) {
+        return GithubAPI("PATCH","/gists/"+id,params);        
+    }
+    github.starGist= function(id) {
+        return GithubAPI("PUT","/gists/"+id+"/star");        
+    }
+    github.forkGist= function(id) {
+        return GithubAPI("POST","/gists/"+id+"/fork");
+    }
+    github.deleteGist= function(id) {
+        return GithubAPI("DELETE","/gists/"+id);  
     }
 }();
