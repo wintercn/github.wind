@@ -1,18 +1,27 @@
-<script src="wind-all-0.7.3.js"></script>
+﻿<script src="wind-all-0.7.3.js"></script>
 <script src="github.js"></script>
 
+Client ID: <input id="clientID"/>
+<a href="javascript:github.login(document.getElementById('clientID').value,undefined,'user,public_repo');">登录</a>
 <script>
-eval(Wind.compile("async", function () {
-    github.access_token = "93eb1d0fcc823d3ede0cf00f448f4c28c8a23fdc";
 
-    //var me = $await(github.getUser("JeffreyZhao"));
-    var me = $await(github.getAuthenticatedUser());
-    
-    var me = $await(github.createIssue("wintercn","es5.zh-cn",{title:"api test",body:"api test"}));
-    console.log(me);
+Wind.logger.level = Wind.Logging.Level.ERROR;
 
+if(github.access_token) {
+    eval(Wind.compile("async", function () {
+        //var me = $await(github.getUser("JeffreyZhao"));
+        //var me = $await(github.getAuthenticatedUser());
+        //console.log(me);
         
-    
-}))().start();
+        var issues = $await(github.listIssuesForRepository("wintercn","es5.zh-cn",{
+            milestone:"none",
+            assignee:"*"
+        }));
+        console.log(issues);
+        //var me = $await(github.createIssue("wintercn","es5.zh-cn",{title:"api test",body:"api test"}));
+        //console.log(me);      
+        
+    }))().start();
+}
 
 </script>

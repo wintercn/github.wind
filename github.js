@@ -25,24 +25,18 @@ void function() {
 
 
     function GithubAPI(method,path,params){
-        return Wind.Async.Task.create(function (t) {
-            
-            var xhr = new XMLHttpRequest();
-            
-            xhr.open(method, github.host+path, true);
-            
-            
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            
+        return Wind.Async.Task.create(function (t) {            
+            var xhr = new XMLHttpRequest();            
+            xhr.open(method, github.host+path, true);            
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");            
             xhr.setRequestHeader("Accept", github.accept);
-            
-            xhr.setRequestHeader("Authorization", "token "+github.access_token);
-            
+            if(github.access_token) {    
+                xhr.setRequestHeader("Authorization", "token "+github.access_token);
+            }         
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4)
                     t.complete("success",JSON.parse(xhr.responseText));
-            }
-            
+            }            
             xhr.send(JSON.stringify(params));
         });
 
@@ -52,11 +46,10 @@ void function() {
     }
     github.getAuthenticatedUser = function(){
         return GithubAPI("GET","/user",null);
-    }
-    /*
+    }    
     github.updateAuthenticatedUser = function(params){
         return GithubAPI("PATCH","/user",params);
-    }*/
+    }
     github.listIssues = function(params){        
         return GithubAPI("GET","/issues",params);
     }
@@ -65,5 +58,8 @@ void function() {
     }
     github.createIssue = function(user,repo,params){        
         return GithubAPI("POST","/repos/"+user+"/"+repo+"/issues",params);
+    }
+    github.getIssue = function(user,repo,id,params){        
+        return GithubAPI("POST","/repos/"+user+"/"+repo+"/issues/"+id);
     }
 }();
