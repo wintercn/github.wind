@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Untitled Page</title>
+    <script src="RSA/jsbn.js"></script>
+    <script src="RSA/jsbn2.js"></script>
+    <script src="RSA/prng4.js"></script>
+    <script src="RSA/rng.js"></script>
+    <script src="RSA/rsa.js"></script>
+    <script src="RSA/rsa2.js"></script>
+    <script src="wind-all-0.7.3.js"></script>
+    <script src="github.js"></script>
+    <link href="basic.css" rel="Stylesheet" type="text/css" />
+</head>
+<body>
+    <header> 
+        
+        <nav>
+            <a id="login" href="javascript:github.login('TODO:<your own client id>',undefined,'public_repo');">登录</a> 
+            <span id="user" style="display:none;"> <img id="userAvatar" style="width:20px;height:20px;"/> <a id="userName"></a> <a id="userGithub">访问我的github</a> <a id="userLogout" href="javascript:github.logout();document.querySelector('header #login').style.display = '';document.querySelector('header #user').style.display='none';">退出登录</a> <input type="checkbox" id="userKeep" /><label>保持登录</label>  </span> 
+        </nav>
+        
+    </header>
+    
+    <script type="text/javascript">
+
+        
+        eval(Wind.compile("async", function () {
+            if(!github.access_token) return ;
+            var data = $await(github.getMyUserInfo());
+            console.log(data);
+            
+            document.querySelector("header #login").style.display = "none";
+            var userZone = document.querySelector("header #user");
+            userZone.style.display = "";
+            
+            {
+                var userAvatar = document.querySelector("header #user #userAvatar");
+                userAvatar.src = data.avatar_url;
+            
+                var userName = document.querySelector("header #user #userName");
+                userName.appendChild(document.createTextNode("欢迎, " + data.name));
+                
+                var userGithub = document.querySelector("header #user #userGithub");
+                userGithub.href = data.html_url;
+                
+                var userKeep = document.querySelector("header #user #userKeep");
+
+                
+                if(localStorage["keepLogin"]) {
+                    userKeep.checked = true;
+                    github.keepLogin();
+                } else {
+                    userKeep.checked = false;
+                    github.cancelKeepLogin();
+                }
+                userKeep.addEventListener("click",function(){
+                    if(this.checked){
+                        github.keepLogin();
+                    } else {
+                        github.cancelKeepLogin();
+                    }
+                },false);
+            }
+
+        }))().start();
+    </script>
+</body>
+</html>
